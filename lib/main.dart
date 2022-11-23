@@ -1,19 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
+import 'http/albumApi.dart';
 import 'models/Album.dart';
 
-Future<Album> fetchAlbum() async {
-  final response = await http
-      .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
 
-  if (response.statusCode == 200) {
-    return Album.fromJson(jsonDecode(response.body));
-  } else {
-    throw Exception('Failed to load album');
-  }
-}
 
 void main() => runApp(const MyApp());
 
@@ -78,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    futureAlbum = fetchAlbum();
+    futureAlbum = fetchAlbum(1);
   }
 
   @override
@@ -113,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             const Text(
               'You have pushed the button this many times:',
@@ -133,6 +123,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
                 return const CircularProgressIndicator();
               }
+            ),
+            const Expanded(
+              child: AlbumList()
             )
           ],
         ),
@@ -142,6 +135,67 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class AlbumList extends StatefulWidget {
+  const AlbumList({ super.key });
+
+  @override
+  State<AlbumList> createState() => _AlbumListState();
+}
+
+class _AlbumListState extends State<AlbumList> {
+  late Future<List<Album>> _albums;
+
+  final int _page = 1;
+  final int _limit = 20;
+
+  @override
+  void initState() {
+    super.initState();
+    _albums = fetchAlbums(page: _page, limit: _limit);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Album>>(
+      future: _albums,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+            itemCount: snapshot.data!.length,
+            padding: const EdgeInsets.all(16.0),
+            itemBuilder: (context, i) {
+              return Container(
+                margin: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black26),
+                  borderRadius: BorderRadius.circular(10)
+                ),
+                child: ListTile(
+                  title: Text(
+                    snapshot.data![i].title,
+                    style: const TextStyle(fontSize: 18.0),
+                  ),
+                  trailing: const Icon(
+                    Icons.add_chart,
+                    color: Colors.black38,
+                    semanticLabel: 'Label',
+                  )
+                )
+              );
+            }
+          );
+        } else if (snapshot.hasError) {
+          return Text('${snapshot.error}');
+        }
+
+        return const Center(
+          child: CircularProgressIndicator()
+        );
+      },
     );
   }
 }
