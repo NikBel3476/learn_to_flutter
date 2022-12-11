@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_learning/widgets/routes/users_route.dart';
 
 import 'utils/services/api_service.dart';
 import 'models/album.dart';
@@ -62,6 +63,20 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+  }
+
+  void _onItemTapped(int index) {
+    switch (index) {
+      case 0:
+        // Navigator.pop(context);
+        break;
+      case 1:
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const UsersRoute())
+        );
+        break;
+    }
   }
 
   @override
@@ -139,9 +154,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.account_circle),
-              label: 'Users',
+              label: 'Users'
             ),
           ],
+          onTap: _onItemTapped,
         )
     );
   }
