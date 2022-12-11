@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../http/albumApi.dart';
-import '../models/Album.dart';
+import '../utils/services/api_service.dart';
+import '../models/album.dart';
 
 class AlbumList extends StatefulWidget {
   const AlbumList({ super.key });
