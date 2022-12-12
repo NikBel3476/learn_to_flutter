@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_learning/widgets/routes/users_route.dart';
 
-import 'http/albumApi.dart';
-import 'models/Album.dart';
-import 'widgets/LazyAlbumList.dart';
+import 'utils/services/api/api_album_service.dart';
+import 'models/album.dart';
+import 'widgets/lazy_album_list.dart';
 
 void main() => runApp(const MyApp());
 
@@ -64,6 +65,20 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _onItemTapped(int index) {
+    switch (index) {
+      case 0:
+        // Navigator.pop(context);
+        break;
+      case 1:
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const UsersRoute())
+        );
+        break;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -79,61 +94,71 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            FutureBuilder<Album>(
-              future: futureAlbum,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Text(snapshot.data!.title);
-                } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                }
-
-                return const CircularProgressIndicator();
-              }
-            ),
-            const Expanded(
-              child: LazyAlbumList()
-            )
-          ],
+        appBar: AppBar(
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text(widget.title),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        body: Center(
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: Column(
+            // Column is also a layout widget. It takes a list of children and
+            // arranges them vertically. By default, it sizes itself to fit its
+            // children horizontally, and tries to be as tall as its parent.
+            //
+            // Invoke "debug painting" (press "p" in the console, choose the
+            // "Toggle Debug Paint" action from the Flutter Inspector in Android
+            // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+            // to see the wireframe for each widget.
+            //
+            // Column has various properties to control how it sizes itself and
+            // how it positions its children. Here we use mainAxisAlignment to
+            // center the children vertically; the main axis here is the vertical
+            // axis because Columns are vertical (the cross axis would be
+            // horizontal).
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              const Text(
+                'You have pushed the button this many times:',
+              ),
+              Text(
+                '$_counter',
+                style: Theme.of(context).textTheme.headline4,
+              ),
+              FutureBuilder<Album>(
+                  future: futureAlbum,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Text(snapshot.data!.title);
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    }
+
+                    return const CircularProgressIndicator();
+                  }),
+              const Expanded(child: LazyAlbumList())
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _incrementCounter,
+          tooltip: 'Increment',
+          child: const Icon(Icons.add),
+        ), // This trailing comma makes auto-formatting nicer for build methods.
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.photo_album),
+              label: 'Albums',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle),
+              label: 'Users'
+            ),
+          ],
+          onTap: _onItemTapped,
+        )
     );
   }
 }
