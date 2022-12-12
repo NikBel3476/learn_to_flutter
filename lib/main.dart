@@ -3,7 +3,7 @@ import 'package:flutter_learning/widgets/routes/users_route.dart';
 
 import 'utils/services/api/api_album_service.dart';
 import 'models/album.dart';
-import 'widgets/LazyAlbumList.dart';
+import 'widgets/lazy_album_list.dart';
 
 void main() => runApp(const MyApp());
 
