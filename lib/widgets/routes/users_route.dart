@@ -8,7 +8,7 @@ class UsersRoute extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Users page'),
+        title: const Text('Users'),
       ),
       body: const LazyUsersList()
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_learning/models/user.dart';
+import 'package:flutter_learning/widgets/user_list_item.dart';
 
 import '../utils/services/api/api_user_service.dart';
 
@@ -72,17 +73,7 @@ class _LazyUsersListState extends State<LazyUsersList> {
                   border: Border.all(color: Colors.black26),
                   borderRadius: BorderRadius.circular(10)
               ),
-              child: ListTile(
-                  title: Text(
-                    _users[i].name,
-                    style: const TextStyle(fontSize: 18.0),
-                  ),
-                  trailing: const Icon(
-                    Icons.account_circle,
-                    color: Colors.black38,
-                    semanticLabel: 'User avatar',
-                  ),
-              )
+              child: UserListItem(user: _users[i])
           );
         }
     );

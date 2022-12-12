@@ -15,7 +15,7 @@ Future<User> fetchUser(int id) async {
   }
 }
 
-Future<List<User>> fetchUsers({ int page = 1, int limit = 10 }) async {
+Future<List<User>> fetchUsers({ int page = 1, int limit = 5 }) async {
   final response = await http.get(Uri.parse('$host/users?_page=$page&_limit=$limit'));
 
   if (response.statusCode == 200) {
