@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_learning/widgets/LazyAlbumList.dart';
+import 'package:flutter_learning/widgets/lazy_users_list.dart';
 
 class UsersRoute extends StatelessWidget {
   const UsersRoute({super.key});
@@ -10,7 +10,7 @@ class UsersRoute extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Users page'),
       ),
-      body: const LazyAlbumList()
+      body: const LazyUsersList()
     );
   }
 }

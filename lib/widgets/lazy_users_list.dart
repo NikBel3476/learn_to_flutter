@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_learning/models/user.dart';
 
-import '../utils/services/api/api_album_service.dart';
-import '../models/album.dart';
+import '../utils/services/api/api_user_service.dart';
 
-class LazyAlbumList extends StatefulWidget {
-  const LazyAlbumList({ super.key });
+class LazyUsersList extends StatefulWidget {
+  const LazyUsersList({ super.key });
 
   @override
-  State<LazyAlbumList> createState() => _LazyAlbumListState();
+  State<LazyUsersList> createState() => _LazyUsersListState();
 }
 
-class _LazyAlbumListState extends State<LazyAlbumList> {
+class _LazyUsersListState extends State<LazyUsersList> {
   final ScrollController _controller = ScrollController();
 
-  final _albums = <Album>[];
+  final _users = <User>[];
   int _page = 1;
   bool _isLoading = true;
 
@@ -21,7 +21,7 @@ class _LazyAlbumListState extends State<LazyAlbumList> {
   void initState() {
     _controller.addListener(_onScroll);
     super.initState();
-    _fetchAlbums();
+    _fetchUsers();
   }
 
   @override
@@ -38,17 +38,17 @@ class _LazyAlbumListState extends State<LazyAlbumList> {
       setState(() {
         _isLoading = true;
       });
-      _fetchAlbums();
+      _fetchUsers();
     }
   }
 
-  void _fetchAlbums() async {
-    final albums = await fetchAlbums(page: _page);
+  void _fetchUsers() async {
+    final users = await fetchUsers(page: _page);
     setState(() {
-      if (albums.isNotEmpty) {
+      if (users.isNotEmpty) {
         _page++;
       }
-      _albums.addAll(albums);
+      _users.addAll(users);
       _isLoading = false;
     });
   }
@@ -57,10 +57,10 @@ class _LazyAlbumListState extends State<LazyAlbumList> {
   Widget build(BuildContext context) {
     return ListView.builder(
         controller: _controller,
-        itemCount: _isLoading ? _albums.length + 1 : _albums.length,
+        itemCount: _isLoading ? _users.length + 1 : _users.length,
         padding: const EdgeInsets.all(16.0),
         itemBuilder: (context, i) {
-          if (i == _albums.length) {
+          if (i == _users.length) {
             return const Center(
                 child: CircularProgressIndicator()
             );
@@ -74,14 +74,14 @@ class _LazyAlbumListState extends State<LazyAlbumList> {
               ),
               child: ListTile(
                   title: Text(
-                    _albums[i].title,
+                    _users[i].name,
                     style: const TextStyle(fontSize: 18.0),
                   ),
                   trailing: const Icon(
-                    Icons.add_chart,
+                    Icons.account_circle,
                     color: Colors.black38,
-                    semanticLabel: 'Label',
-                  )
+                    semanticLabel: 'User avatar',
+                  ),
               )
           );
         }

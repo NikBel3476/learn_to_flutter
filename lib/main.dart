@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_learning/widgets/routes/users_route.dart';
 
-import 'utils/services/api_service.dart';
+import 'utils/services/api/api_album_service.dart';
 import 'models/album.dart';
 import 'widgets/LazyAlbumList.dart';
 

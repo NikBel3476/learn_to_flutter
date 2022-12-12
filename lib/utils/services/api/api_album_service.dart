@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
+import '../../../constants/api_path.dart';
+import '../../../models/album.dart';
 
-import '../../constants/api_path.dart';
-import '../../models/album.dart';
+import 'package:http/http.dart' as http;
 
 Future<Album> fetchAlbum(int id) async {
   final response = await http

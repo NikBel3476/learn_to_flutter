@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../utils/services/api_service.dart';
+import '../utils/services/api/api_album_service.dart';
 import '../models/album.dart';
 
 class AlbumList extends StatefulWidget {
